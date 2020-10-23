@@ -41,7 +41,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
        UserDetails pepperUser = User.builder()
                 .username("pepper")
                 .password(passwordEncoder.encode("password"))
-                .roles("STUDENT")
+                .roles(ApplicationUserRole.STUDENT.name())
+                .build(); // without this build method typr of pepperUser is User.UserBuilder
+
+        UserDetails kellyUser = User.builder()
+                .username("kelly")
+                .password(passwordEncoder.encode("password"))
+                .roles(ApplicationUserRole.ADMIN.name())
                 .build(); // without this build method typr of pepperUser is User.UserBuilder
 
         return new InMemoryUserDetailsManager(
