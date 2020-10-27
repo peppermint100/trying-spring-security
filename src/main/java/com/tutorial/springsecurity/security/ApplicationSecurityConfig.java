@@ -45,14 +45,15 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login").permitAll()
                 .defaultSuccessUrl("/courses")
-                .and().rememberMe()
+                .passwordParameter("password")
+                .usernameParameter("username")
+                .and().rememberMe().rememberMeParameter("remember-me")
                 .and().logout()
                 .logoutUrl("/logout")
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID", "remember-me")
                 .logoutSuccessUrl("/login");
-
     }
 
     @Override
