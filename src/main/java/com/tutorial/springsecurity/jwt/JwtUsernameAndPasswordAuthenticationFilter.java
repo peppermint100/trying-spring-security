@@ -39,7 +39,9 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                     authenticationRequest.getPassword()
             );
 
-            return authenticationManager.authenticate(authentication);
+            Authentication authenticate = authenticationManager.authenticate(authentication);
+
+            return authenticate;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -50,7 +52,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
         // this needs to be secured
-        String key = "fjeawklf1223";
+        String key = "fjeawkfkewjafklawejfklawjfklafaewjhfawekfhwaeufhawiawefhaewflf1223";
 
         // generate token
         String token = Jwts.builder()
