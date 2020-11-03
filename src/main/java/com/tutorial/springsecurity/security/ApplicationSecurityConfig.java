@@ -1,6 +1,7 @@
 package com.tutorial.springsecurity.security;
 
 import com.tutorial.springsecurity.auth.ApplicationUserService;
+import com.tutorial.springsecurity.jwt.JwtTokenVerifier;
 import com.tutorial.springsecurity.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +41,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // with this line of code session won't be store in in-memory db
                 .and()
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager()))
+                .addFilterAfter(new JwtTokenVerifier(), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
                 .antMatchers("api/**").hasRole(ApplicationUserRole.STUDENT.name())
