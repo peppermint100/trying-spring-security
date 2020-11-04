@@ -23,16 +23,13 @@ import java.util.stream.Collectors;
 
 public class JwtTokenVerifier extends OncePerRequestFilter {
     private final JwtConfig jwtConfig;
-    private final SecretKey secretKey;
 
-    public JwtTokenVerifier(JwtConfig jwtConfig, SecretKey secretKey) {
+    public JwtTokenVerifier(JwtConfig jwtConfig, SecretKey secretKe) {
         this.jwtConfig = jwtConfig;
-        this.secretKey = secretKey;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
 
         //get token from header
         String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
@@ -49,7 +46,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         try{
            Jws<Claims> claimsJws = Jwts
                    .parserBuilder()
-                   .setSigningKey(secretKey)
+//                   .setSigningKey(secretKey)
+                   .setSigningKey(jwtConfig.getBytesSecretKey())
                    .build().parseClaimsJws(token);
 
             Claims body = claimsJws.getBody();

@@ -1,25 +1,30 @@
 package com.tutorial.springsecurity.jwt;
 
 import com.google.common.net.HttpHeaders;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import javax.crypto.SecretKey;
 
 // get config values from application.properties
+@Configuration
 @ConfigurationProperties(prefix = "application.jwt")
 public class JwtConfig {
-    private String secretkey;
+    private String secretKey;
     private String tokenPrefix;
     private Integer tokenExpirationAfterDays;
 
-    public JwtConfig() {
+    public JwtConfig(){
     }
 
     public String getSecretkey() {
-        return secretkey;
+        return secretKey;
     }
 
     public void setSecretkey(String secretkey) {
-        this.secretkey = secretkey;
+        this.secretKey = secretKey;
     }
 
     public String getTokenPrefix() {
@@ -36,6 +41,11 @@ public class JwtConfig {
 
     public void setTokenExpirationAfterDays(Integer tokenExpirationAfterDays) {
         this.tokenExpirationAfterDays = tokenExpirationAfterDays;
+    }
+
+    @Bean
+    public SecretKey getBytesSecretKey(){
+        return Keys.hmacShaKeyFor(this.getSecretkey().getBytes());
     }
 
     public String getAuthorizationHeader(){

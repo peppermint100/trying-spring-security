@@ -24,14 +24,12 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 
     private final AuthenticationManager authenticationManager;
     private final JwtConfig jwtConfig;
-    private final SecretKey secretKey;
 
     public JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager,
-                                                      JwtConfig jwtConfig,
-                                                      SecretKey secretKey) {
+                                                      JwtConfig jwtConfig
+                                                      ) {
         this.authenticationManager = authenticationManager;
         this.jwtConfig = jwtConfig;
-        this.secretKey = secretKey;
     }
 
     @Override
@@ -69,7 +67,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                 .claim("authorities", authResult.getAuthorities())
                 .setIssuedAt(new java.util.Date())
                 .setExpiration(Date.valueOf(LocalDate.now().plusDays(jwtConfig.getTokenExpirationAfterDays()))) // date should be imported from java.sql
-                .signWith(secretKey)
+                .signWith(jwtConfig.getBytesSecretKey())
                 .compact();
 
         response.addHeader("Authorization", jwtConfig.getTokenPrefix() + token);
