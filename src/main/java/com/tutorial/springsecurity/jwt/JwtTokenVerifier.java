@@ -23,9 +23,11 @@ import java.util.stream.Collectors;
 
 public class JwtTokenVerifier extends OncePerRequestFilter {
     private final JwtConfig jwtConfig;
+    private SecretKey secretKey;
 
-    public JwtTokenVerifier(JwtConfig jwtConfig, SecretKey secretKe) {
+    public JwtTokenVerifier(JwtConfig jwtConfig, SecretKey secretKey) {
         this.jwtConfig = jwtConfig;
+        this.secretKey = secretKey;
     }
 
     @Override
@@ -46,8 +48,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         try{
            Jws<Claims> claimsJws = Jwts
                    .parserBuilder()
-//                   .setSigningKey(secretKey)
-                   .setSigningKey(jwtConfig.getBytesSecretKey())
+                   .setSigningKey(secretKey)
                    .build().parseClaimsJws(token);
 
             Claims body = claimsJws.getBody();

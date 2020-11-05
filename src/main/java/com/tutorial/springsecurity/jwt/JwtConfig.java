@@ -9,21 +9,29 @@ import org.springframework.context.annotation.Configuration;
 import javax.crypto.SecretKey;
 
 // get config values from application.properties
+//@ConfigurationProperties(prefix = "application.jwt")
 @Configuration
-@ConfigurationProperties(prefix = "application.jwt")
 public class JwtConfig {
+
+    String key ="fjeawkfkewjafklawejfklawjfklafaewjhfawekfhwaeufhawiawefhaewflf1223awfefawefeaw";
+    String bearer ="Bearer ";
+    Integer expirationAfterDays = 14;
+
     private String secretKey;
     private String tokenPrefix;
     private Integer tokenExpirationAfterDays;
 
-    public JwtConfig(){
+    public JwtConfig() {
+        this.secretKey = key;
+        this.tokenPrefix = bearer;
+        this.tokenExpirationAfterDays = expirationAfterDays;
     }
 
-    public String getSecretkey() {
+    public String getSecretKey() {
         return secretKey;
     }
 
-    public void setSecretkey(String secretkey) {
+    public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
     }
 
@@ -43,12 +51,7 @@ public class JwtConfig {
         this.tokenExpirationAfterDays = tokenExpirationAfterDays;
     }
 
-    @Bean
-    public SecretKey getBytesSecretKey(){
-        return Keys.hmacShaKeyFor(this.getSecretkey().getBytes());
-    }
-
-    public String getAuthorizationHeader(){
+    public String getAuthorizationHeader() {
         return HttpHeaders.AUTHORIZATION;
     }
 }
